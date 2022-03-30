@@ -1,11 +1,14 @@
 package it.polito.tdp.model;
 
+import java.util.List;
+
 public class TestRegine {
 
 	public static void main(String[] args) {
 		
 		Regine r = new Regine();
-		r.cercaRegine(8);		
+		List<Integer> soluzione = r.cercaRegine(15);
+		System.out.println(soluzione);
 	}
 
 }
