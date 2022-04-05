@@ -6,8 +6,8 @@ public class TestRegine {
 
 	public static void main(String[] args) {
 		
-		Regine r = new Regine();
-		List<Integer> soluzione = r.cercaRegine(15);
+		RegineTutte r = new RegineTutte();
+		List<List<Integer>> soluzione = r.cercaRegine(4);
 		System.out.println(soluzione);
 	}
 

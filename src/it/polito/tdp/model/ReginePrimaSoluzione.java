@@ -5,43 +5,38 @@ import java.util.List;
 
 public class ReginePrimaSoluzione {
 	
-	List<List<Integer>> tutte; //tutte le soluzioni
+	List<Integer> soluzione; //tutte le soluzioni
 	
-	public List<List<Integer>> cercaRegine(int N) { //ritorna una lista di soluzioni complete
-		this.tutte = new ArrayList<List<Integer>>();
+	public List<Integer> cercaRegine(int N) { // ritorna la prima soluzione trovata
+		this.soluzione = null;
 		
 		List<Integer> parziale = new ArrayList <Integer> ();
 		this.regine_ricorsiva(parziale, 0, N);
 		
-		return this.tutte;
+		return this.soluzione;
 	}
 	
-	private void regine_ricorsiva(List<Integer> parziale, int livello, int N) {
+	private boolean regine_ricorsiva(List<Integer> parziale, int livello, int N) { // il boolean dice se bisogna continuare dopo aver trovato la prima soluzione
 		if(livello==N) {
-			// caso terminale -- si è trovata la soluzione completa 
-			// livello = N : già sono state riempite le N righe visto che si parte da zero
 			
 //			System.out.println(parziale);
 			
-			this.tutte.add(new ArrayList<Integer> (parziale)); // va chiamata per forza la new
+			this.soluzione = new ArrayList<>(parziale); // va chiamata per forza la new
+			return false; // fermarsi, non continuare
 			
 		} else {
-			// caso normale: si riceve una soluzione parziale (da zero a livello-1) già deciso
-			// va decisa la soluzione parziale di livello tra tutti i valori possibili da zero a N-1
-			// purché compatibili
 			
-			for(Integer col=0; col<N; col++) { // si prova dentro tutte le colonne
-				// if(colonna compatibile con la soluzione parziale -- con le regine già posizionate) 
-				// qui algoritmo di ricorsione
-				
+			for(Integer col=0; col<N; col++) { 
 				if(this.compatibile(col, parziale, livello)) {
 					parziale.add(col); // prova a mettere la regina qui
-					this.regine_ricorsiva(parziale, livello+1, N); // prova a vedere se riesci a risolvere
-					/* PROCEDURA DI BACKTRACKING */
+					boolean continua = this.regine_ricorsiva(parziale, livello+1, N); // prova a vedere se riesci a risolvere
+					if(!continua)
+						return false;
 					parziale.remove(parziale.size()-1); // torniamo all'inizio del tentativo e proseguiamo
 				}
 				
 			}
+			return true;
 		}
 	}
 	
@@ -50,10 +45,7 @@ public class ReginePrimaSoluzione {
 			return false;
 		}
 		
-		for(int riga = 0; riga<parziale.size(); riga++) { // ogni riga dice che c'è una regina alle coordinate
-														  // (riga, parziale.get(riga)) 
-														  // confrontare con (livello, col)
-			
+		for(int riga = 0; riga<parziale.size(); riga++) { 
 			if((riga+parziale.get(riga)) == (livello+col))
 				return false;
 			
